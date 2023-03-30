@@ -1,25 +1,37 @@
-// Definir variables para elementos del DOM
-const menuItems = document.querySelectorAll(".menu-item");
-const menu = document.querySelector(".menu");
-const orderForm = document.querySelector("#order-form");
-const orderButton = document.querySelector("#order-button");
-const orderSummary = document.querySelector("#order-summary");
+// Obtenemos todos los elementos de imagen del documento
+const images = document.getElementsByTagName('img');
 
-// Función para mostrar los detalles del pedido en el resumen
-function displayOrderSummary(event) {
-  event.preventDefault();
-  let orderDetails = "";
+// Añadimos un evento click a cada imagen para que se muestre un modal con la imagen ampliada
+for (let i = 0; i < images.length; i++) {
+  images[i].addEventListener('click', function() {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
 
-  // Obtener los detalles de cada elemento seleccionado en el menú
-  for (let i = 0; i < menuItems.length; i++) {
-    if (menuItems[i].value > 0) {
-      orderDetails += `${menuItems[i].name}: ${menuItems[i].value} \n`;
-    }
-  }
+    const modalImage = document.createElement('img');
+    modalImage.src = this.src;
+    modalImage.alt = this.alt;
 
-  // Mostrar los detalles del pedido en el resumen
-  orderSummary.innerHTML = orderDetails;
+    modal.appendChild(modalImage);
+    document.body.appendChild(modal);
+
+    // Añadimos un evento click al modal para que se cierre al hacer clic fuera de la imagen
+    modal.addEventListener('click', function() {
+      modal.remove();
+    });
+  });
 }
 
-// Agregar evento al botón de ordenar
-orderButton.addEventListener("click", displayOrderSummary);
+// Obtenemos todos los elementos de tabla del documento
+const tables = document.getElementsByTagName('table');
+
+// Añadimos un evento click a cada celda de precio para que se muestre el precio en un mensaje emergente
+for (let i = 0; i < tables.length; i++) {
+  const cells = tables[i].getElementsByTagName('td');
+  for (let j = 0; j < cells.length; j++) {
+    if (cells[j].textContent.startsWith('$')) {
+      cells[j].addEventListener('click', function() {
+        alert('El precio es ' + cells[j].textContent);
+      });
+    }
+  }
+}
